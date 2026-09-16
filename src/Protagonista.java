@@ -1,5 +1,5 @@
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 public class Protagonista {
     //atributos
     public String nome;
@@ -8,7 +8,7 @@ public class Protagonista {
     public int medicina;
     public int classe;
     public int fe;
-    public List<String> inventario;
+    private List<String> inventario;
 
     public Protagonista(){
 
@@ -25,8 +25,10 @@ public class Protagonista {
     public void removeItem(String nome){
         inventario.remove(nome);
     }
+
     public void addItem(String nome){
         inventario.add(nome);
 
     }
 }
+
