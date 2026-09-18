@@ -2,6 +2,7 @@ import java.util.Scanner;
 
 public class ViewTela{
     public static void main(String[] args){
+
         Protagonista player = new Protagonista();
         ControllerPlayer control = new ControllerPlayer(player);
         Scanner scanner = new Scanner(System.in);
@@ -35,5 +36,6 @@ public class ViewTela{
         System.out.println(control.getPlayer().medicina);
         System.out.println(control.getPlayer().classe);
         System.out.println(control.getPlayer().fe);
+
     }
 }

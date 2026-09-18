@@ -28,7 +28,6 @@ public class Protagonista {
 
     public void addItem(String nome){
         inventario.add(nome);
-
     }
 }
 
