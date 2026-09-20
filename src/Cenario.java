@@ -4,7 +4,7 @@ public class Cenario {
     public String nome;
     public int passagens;
     public List<String> falas;
-
+    public String escolha;
     public  Cenario(String nome, int passagens){
         this.nome = nome;
         this.passagens = passagens;

@@ -25,9 +25,16 @@ public class RepositorioPersonagens {
         NPC pesquisadora = new NPC("Laila", 0);
         personagens.put("Laila", pesquisadora);
 
+        NPC zuri = new NPC("Zuri", 0);
+        personagens.put("Zuri",zuri);
+
+
         NPC cardeal = new NPC("Toin", 0);
         personagens.put("Toin", cardeal);
         }
+    public NPC getNPC(String nome){
+        return personagens.get(nome);
+    }
     public void atribuirTexto() {
         //Falas do Guia
         personagens.get("Jeffrey").falas.add("A peste varreu a parte baixa sem piedade.\n" +

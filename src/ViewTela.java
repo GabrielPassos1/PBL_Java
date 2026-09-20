@@ -1,43 +1,49 @@
 import java.util.Scanner;
 
-public class ViewTela{
-    public static void main(String[] args){
+public class ViewTela {
+    private RepositorioCenario repositorio;
+    private Cenario cenarioAtual;
 
-        Protagonista player = new Protagonista();
-        RepositorioCenarios repositorio = new RepositorioCenarios();
-        ControllerPlayer control = new ControllerPlayer(player,repositorio);
+    public ViewTela(String nomeJogador) {
+        // Inicializa o repositório passando o nome digitado
+        this.repositorio = new RepositorioCenario();
+
+        // Define o ponto de partida do jogador
+        carregarCenario("Casa do Jogador");
+    }
+
+    public void carregarCenario(String chave) {
+        Cenario proximo = repositorio.getCenario(chave);
+        if (proximo != null) {
+            this.cenarioAtual = proximo;
+            exibirCenario();
+        } else {
+            System.out.println("[Erro] Cenário '" + chave + "' não foi encontrado no Repositório.");
+        }
+    }
+
+    private void exibirCenario() {
+        System.out.println("\n==================================================");
+        System.out.println("  " + cenarioAtual.nome.toUpperCase());
+        System.out.println("==================================================");
+
+        // Imprime as opções/escolhas configuradas para este cenário
+        System.out.println("\n--- SUAS OPÇÕES ---");
+        System.out.println(cenarioAtual.escolha);
+    }
+
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-
-        System.out.println("Qual é o seu nome?");
+        System.out.print("Digite o nome do seu personagem: ");
         String nome = scanner.nextLine();
 
-        control.AddNome(nome);
+        // Instancia a View, inicializando internamente o RepositorioCenario
+        ViewTela jogo = new ViewTela(nome);
 
-        System.out.println("Escolha uma classe: 1:Médico, 2:Cirurgião da Peste, 3: Clérigo, 4:Informações sobre as classes");
-        int classe = scanner.nextInt();
-
-        switch(classe){
-            case 1:
-                control.CriarMedico();
-                break;
-
-            case 2:
-                control.CriarCirurgiao();
-                break;
-
-            case 3:
-                control.CriarCirurgiao();
-                break;
-
-            case 4:
-                System.out.println("O medico é mais focado na oratória, enquanto o cirurgião em medicina e o clérigo em Fé");
-                break;
-        }
-
-        System.out.println(control.getPlayer().medicina);
-        System.out.println(control.getPlayer().classe);
-        System.out.println(control.getPlayer().fe);
-
+        // Exemplo de navegação: mudando para o Centro da Capital
+        System.out.println("\nPressione ENTER para continuar para a Capital...");
+        scanner.nextLine();
+        jogo.carregarCenario("Centro da Capital");
     }
 }

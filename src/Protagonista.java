@@ -8,7 +8,7 @@ public class Protagonista {
     public int medicina;
     public int classe;
     public int fe;
-    private List<String> inventario;
+    public List<String> inventario;
 
     public Protagonista(){
 
@@ -29,5 +29,6 @@ public class Protagonista {
     public void addItem(String nome){
         inventario.add(nome);
     }
+
 }
 
