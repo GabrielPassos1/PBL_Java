@@ -5,9 +5,6 @@ public class Cenario {
     public int passagens;
     public List<String> falas;
 
-
-
-
     public  Cenario(String nome, int passagens){
         this.nome = nome;
         this.passagens = passagens;

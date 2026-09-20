@@ -44,5 +44,8 @@ public class RepositorioPersonagens {
                                              "querem que todos os infectados sejam incinerados vivos para limpar a cidade\n");
 
 
+        personagens.get("Sillas").falas.add("— O meu nome é Silas — a voz grossa dele soa quase como um rosnado cansado.—\n"+ "" +
+                                            "Mas a verdadeira questão aqui é a sua identidade. Não temos visto rostos novos desde que a praga se espalhou.\n"+
+                                            "O que um forasteiro veio procurar na Capital em tempos tão sombrios?\n");
     }
     }

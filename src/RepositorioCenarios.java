@@ -48,6 +48,10 @@ public class RepositorioCenarios {
             Cenario castelo = new Cenario("Castelo Real",0);
             cenarios.put("Castelo",castelo);
         }
+    public Cenario getCenario(String chave) {
+        return cenarios.get(chave);
+    }
+
         public void atribuirTexto() {
             cenarios.get("Centro da Capital").falas.add(
                     "Ao atravessar os grandes portões e adentrar o centro da Capital, " + "\n" +
@@ -66,13 +70,17 @@ public class RepositorioCenarios {
                                                 "Em meio à miséria e ao luto das ruas, há apenas um estabelecimento com as portas abertas:\n"+
                                                 "um barzinho humilde e mal iluminado, mas que parece ser o único refúgio seguro considerando o entorno.\n");
 
+            cenarios.get("Subúrbio").falas.add("Observando o caos ao redor, você nota um grupo de pessoas em pânico no meio da rua lamacenta.\n"+
+                                                "Ao se aproximar, percebe que se trata de uma família reunida ao redor do filho mais novo.\n"+
+                                                "O garoto acabou de desmaiar, ardendo em febre. Acreditando ser o início da peste babilônica,\n"+
+                                                "os pais gritam por socorro, atraindo olhares desconfiados dos vizinhos.");
+
             cenarios.get("Bar").falas.add("Ao entrar no bar, você se sente acolhido e, ao olhar em volta, percebe que aquele lugar se tornou um refúgio para as pessoas.\n"+
                     "Alguns afogam as mágoas, outros xingam a nobreza, porém, ao fundo, atrás do barman, você consegue escutar gemidos abafados de dor e sentir um leve cheiro de sangue no ar.\n" +
                     "Ao puxar um banco de madeira rangente e se acomodar no balcão, a figura robusta do barman interrompe o que está fazendo.\n"+
                     "Ele joga um pano encardido sobre o balcão e avalia você de cima a baixo com olhos exaustos, mas afiados.\n"+
-                    "Apoiando as mãos calejadas na madeira úmida, ele se inclina levemente em sua direção.\n" +
-                    "— O meu nome é Silas — a voz grossa dele soa quase como um rosnado cansado. — Mas a verdadeira questão aqui é a sua identidade.\n"+
-                    "Não temos visto rostos novos desde que a praga se espalhou. O que um forasteiro veio procurar na Capital em tempos tão sombrios?\n");
+                    "Apoiando as mãos calejadas na madeira úmida, ele se inclina levemente em sua direção.\n"
+                   );
 
             
         }

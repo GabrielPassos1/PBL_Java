@@ -4,8 +4,10 @@ public class ViewTela{
     public static void main(String[] args){
 
         Protagonista player = new Protagonista();
-        ControllerPlayer control = new ControllerPlayer(player);
+        RepositorioCenarios repositorio = new RepositorioCenarios();
+        ControllerPlayer control = new ControllerPlayer(player,repositorio);
         Scanner scanner = new Scanner(System.in);
+
 
         System.out.println("Qual é o seu nome?");
         String nome = scanner.nextLine();

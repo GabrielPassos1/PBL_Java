@@ -1,14 +1,21 @@
 
 public class ControllerPlayer {
     private Protagonista player;
+    private RepositorioCenarios repositorio;
+    public Cenario cenaAtual;
 
-    public ControllerPlayer(Protagonista player) {
-
+    public ControllerPlayer(Protagonista player,RepositorioCenarios repositorio) {
+        this.repositorio = repositorio;
         this.player = player;
     }
 
     public void AddNome(String nome){
         this.player.nome = nome;
+    }
+
+    public void AcessarCenario(String chave){
+        Cenario local = repositorio.getCenario(chave);
+        cenaAtual = local;
     }
 
     public Protagonista getPlayer(){
@@ -57,5 +64,6 @@ public class ControllerPlayer {
     public void AumentaFe(){
         player.medicina = player.fe + 1;
     }
-    //Preciso de ideias para mecher no inventario a partir do controller.
+
+
 }
