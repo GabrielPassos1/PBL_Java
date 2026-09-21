@@ -5,16 +5,19 @@ import view.MenuView;
 public class MenuController {
     private MenuView view;
     private boolean menuRodando;
-    private PlayerController gameController; // Recebe o controlador do jogo da Main
+    private PlayerController playerController;
+    private JogoController jogoController;
 
-    // O construtor agora exige que a Main passe o gameController pronto
-    public MenuController(PlayerController gameController) {
+    // O construtor recebe tanto o PlayerController (para criar o personagem)
+    // quanto o JogoController (para iniciar o loop do jogo)
+    public MenuController(PlayerController playerController, JogoController jogoController) {
         this.view = new MenuView();
         this.menuRodando = true;
-        this.gameController = gameController;
+        this.playerController = playerController;
+        this.jogoController = jogoController;
     }
 
-    public void inicar() {
+    public void iniciar() {
         while (menuRodando){
             view.mostrarTexto("\n" +
                     "\u001B[0;37;40m▓ ▓ █▀▀ █▀█ █▀▀ ▀█▀ █▀▄█ ▀█▀ █▀█\u001B[0m\n" +
@@ -47,24 +50,26 @@ public class MenuController {
                         "╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝");
                 String classeEscolhida = view.pedirEscolha();
 
-                gameController.AddNome(nome);
-                gameController.getPlayer().setVida(5);
-                gameController.getPlayer().setDinheiro(20);
+                // Usa o playerController para configurar os atributos do jogador
+                playerController.AddNome(nome);
+                playerController.getPlayer().setVida(5);
+                playerController.getPlayer().setDinheiro(20);
 
                 if (classeEscolhida.equals("1")) {
-                    gameController.CriarMedico();
+                    playerController.CriarMedico();
                 } else if (classeEscolhida.equals("2")) {
-                    gameController.CriarCirurgiao();
+                    playerController.CriarCirurgiao();
                 } else if (classeEscolhida.equals("3")) {
-                    gameController.CriarClerigo();
+                    playerController.CriarClerigo();
                 } else {
-                    gameController.CriarMedico();
+                    playerController.CriarMedico();
                 }
 
-                view.mostrarTexto("\nA jogatina está iniciando! Prepare-se, " + gameController.getPlayer().getNome() + "...");
+                view.mostrarTexto("\nA jogatina está iniciando! Prepare-se, " + playerController.getPlayer().getNome() + "...");
                 menuRodando = false;
 
-                gameController.iniciarJogo();
+                // Usa o jogoController para dar o start na lógica das cenas
+                jogoController.iniciarJogo();
 
             } else if (escolha.equals("2")) {
                 view.mostrarTexto("\n" +
