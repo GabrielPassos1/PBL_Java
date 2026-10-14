@@ -1,0 +1,45 @@
+package controller;
+
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import model.Save;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+public class SaveController {
+    public static final int SLOTS = 3;
+    private static final Path PASTA = Paths.get("saves");
+    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+    private Path caminhoSlot(int slot){
+        if(slot < 1 || slot > SLOTS){
+            throw new IllegalArgumentException("Slot inválido ");
+        }
+        return PASTA.resolve("save" + slot +".json");
+    }
+
+    public void salvar(int slot, Save save) throws IOException{
+        Files.createDirectories(PASTA);
+        String json = gson.toJson(save);
+        Files.writeString(caminhoSlot(slot),json,StandardCharsets.UTF_8);
+    }
+
+    public Save carregar(int slot) throws IOException{
+        if(!existeSave(slot)){
+            return null;
+        }
+        String json = Files.readString(caminhoSlot(slot),StandardCharsets.UTF_8);
+        return gson.fromJson(json,Save.class);
+    }
+    public boolean existeSave(int slot) {
+        return Files.exists(caminhoSlot(slot));
+    }
+    public void deletar(int slot) throws IOException{
+        Files.deleteIfExists(caminhoSlot(slot));
+    }
+}

@@ -21,12 +21,12 @@ public class JogoController {
         while (jogando) {
             Cenario cenaAtual = gerenciadorCenario.getCenaAtual();
 
-            // 1. Mostra a fala/narrativa da cena atual
+            //Mostra a fala/narrativa da cena atual
             if (cenaAtual.getFalas() != null) {
                 view.mostrarFalas(cenaAtual.getFalas());
             }
 
-            // 2. Trava de segurança: Se a cena atual for o Game Over, encerra o jogo
+            //Trava de segurança: Se a cena atual for o Game Over, encerra o jogo
             if (cenaAtual.getNome().contains("Game Over")) {
                 jogando = false;
                 view.mostrarTexto("Fim de Jogo!");
@@ -34,12 +34,12 @@ public class JogoController {
                 continue;
             }
 
-            // 3. Cenas com opções de escolha
+            //Cenas com opções de escolha
             if (cenaAtual.getEscolha() != null && !cenaAtual.getEscolha().isEmpty()) {
                 view.mostrarTexto(cenaAtual.getEscolha());
                 int escolha = view.pedirEscolha();
 
-                // 1. Tenta realizar a ação no PlayerController
+                //Tenta realizar a ação no PlayerController
                 boolean sucesso = playerController.tentarEscolha(escolha);
 
                 String proximaCena = gerenciadorCenario.definirProximaCena(
