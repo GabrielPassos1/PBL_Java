@@ -21,7 +21,7 @@ public class Save {
     public Protagonista GetPlayerSave(){
             return this.player;
     }
-    public Cenario GetCenaAtualSave(){
+    public String GetCenaAtualSave(){
         return this.cenaAtual;
     }
 
