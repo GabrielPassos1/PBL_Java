@@ -2,6 +2,8 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Protagonista {
     private String nome;
@@ -11,7 +13,7 @@ public class Protagonista {
     private int classe;
     private int fe;
     private List<String> inventario;
-
+    private Set<String> eventos = new HashSet<>();
     public Protagonista() {
         this.inventario = new ArrayList<>();
     }
@@ -48,5 +50,16 @@ public class Protagonista {
     public List<String> getInventario() { return inventario; }
 
     public void removeItem(String nome) { inventario.remove(nome); }
-    public void addItem(String nome) { inventario.add(nome); }
+
+    public void addItem(String item) {
+        if (!inventario.contains(item)) {
+            inventario.add(item);
+        }
+        else{
+            System.out.println( item + "já adiquirido");
+        }
+    }
+    public boolean temItem(String item) { return inventario.contains(item); }
+
+    public boolean registrarEvento(String id) { return eventos.add(id); }
 }

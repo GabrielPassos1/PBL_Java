@@ -49,11 +49,7 @@ public class MenuController {
                         "║ [3] Clérigo (+2 Medicina, +3 Classe/Sofisticação, +5 Fé)                                                        ║\n" +
                         "╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝");
                 String classeEscolhida = view.pedirEscolha();
-
-                // Usa o playerController para configurar os atributos do jogador
                 playerController.AddNome(nome);
-                playerController.getPlayer().setVida(5);
-                playerController.getPlayer().setDinheiro(20);
 
                 if (classeEscolhida.equals("1")) {
                     playerController.CriarMedico();
