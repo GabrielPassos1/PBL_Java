@@ -1,36 +1,43 @@
 package model;
-import java.util.List;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.io.FileWriter;
-import java.io.IOException;
-import model.Protagonista;
-import model.Cenario;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Save {
     private Protagonista player;
     private String cenaAtual;
-    private List<String> conquistas;
-    private List<String> preferencias;
-    public Save(Protagonista player, String cenaAtual, List<String> conquistas, List<String> preferencias){
-        this.cenaAtual = cenaAtual;
+
+    private String nomeJogador;
+    private String dataHora;
+    private int vida;
+    private int dinheiro;
+
+    public Save(Protagonista player, String cenaAtual) {
         this.player = player;
-        this.conquistas = conquistas;
-        this.preferencias = preferencias;
+        this.cenaAtual = cenaAtual;
+
+        this.nomeJogador = player.getNome();
+        this.vida = player.getVida();
+        this.dinheiro = player.getDinheiro();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        this.dataHora = LocalDateTime.now().format(formatter);
     }
 
-    public Protagonista GetPlayerSave(){
-            return this.player;
+    public Protagonista getPlayer() {
+        return this.player;
     }
-    public String GetCenaAtualSave(){
+
+    public String getCenaAtual() {
         return this.cenaAtual;
     }
 
-    public List<String> getConquistas() {
-        return conquistas;
+    public String getDataHora() {
+        return this.dataHora;
     }
 
-    public List<String> getPreferencias() {
-        return preferencias;
+    public String getResumoMetadados() {
+        return String.format("[%s] %s | Vida: %d | Ouro: %d | %s",
+                this.nomeJogador, this.cenaAtual, this.vida, this.dinheiro, this.dataHora);
     }
-
 }

@@ -28,5 +28,6 @@ public class Main {
         MenuController menu = new MenuController(playerController, jogoController);
 
         menu.iniciar();
+
     }
 }

@@ -27,6 +27,10 @@ public class PlayerController {
         return this.player;
     }
 
+    public void setPlayer(Protagonista playerCarregado) {
+        this.player = playerCarregado;
+    }
+
     public void AddNome(String nome) {
         this.player.setNome(nome);
     }
