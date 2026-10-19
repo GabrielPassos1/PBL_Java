@@ -9,7 +9,7 @@ import controller.JogoController;
 import controller.MenuController;
 import view.JogoView;
 
-public class Main {
+public class    Main {
     public static void main(String[] args) {
         // Repositórios e Views
         RepositorioCenario repCenario = new RepositorioCenario();

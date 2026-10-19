@@ -2,6 +2,8 @@ package controller;
 
 import model.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class PlayerController {
@@ -10,10 +12,12 @@ public class PlayerController {
     private GerenciadorCenario gerenciadorCenario;
     private static final int CHANCE_BASE = 20;
     private static final int BONUS_POR_PONTO = 10;
+    private final ConquistaController conquistaController = new ConquistaController();
+    private final List<String> conquistasNovas = new ArrayList<String>();
 
     public NPC npcAtual;
     public Random rng = new Random();
-    public boolean precisaTeste;
+
 
     public Itens itens = new Itens();
 
@@ -22,6 +26,14 @@ public class PlayerController {
         this.gerenciadorCenario = gerenciadorCenario;
         this.repositorioP = repositorioP;
     }
+
+    public void desbloquearConquista(String conquista) {
+        if (conquistaController.desbloquear(conquista)) {
+            conquistasNovas.add(conquista);
+        }
+    }
+
+
 
     public Protagonista getPlayer() {
         return this.player;
@@ -122,6 +134,7 @@ public class PlayerController {
                 return false;
             } else if (escolha >= 1 && escolha <= 3) {
                 player.setDinheiro(player.getDinheiro() + 10);
+                if (escolha == 1) desbloquearConquista(Conquistas.MILAGREIRO_DAS_RUAS);
             }
         }
         else if("Centro da Capital".equals(nomeCenaAtual)){
