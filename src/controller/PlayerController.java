@@ -13,11 +13,11 @@ public class PlayerController {
     private static final int CHANCE_BASE = 20;
     private static final int BONUS_POR_PONTO = 10;
     private final ConquistaController conquistaController = new ConquistaController();
-    private final List<String> conquistasNovas = new ArrayList<String>();
+    private final List<String> conquistasNovas = new ArrayList<>();
 
     public NPC npcAtual;
     public Random rng = new Random();
-
+    public boolean precisaTeste;
 
     public Itens itens = new Itens();
 
@@ -26,14 +26,6 @@ public class PlayerController {
         this.gerenciadorCenario = gerenciadorCenario;
         this.repositorioP = repositorioP;
     }
-
-    public void desbloquearConquista(String conquista) {
-        if (conquistaController.desbloquear(conquista)) {
-            conquistasNovas.add(conquista);
-        }
-    }
-
-
 
     public Protagonista getPlayer() {
         return this.player;
@@ -47,7 +39,7 @@ public class PlayerController {
         this.player.setNome(nome);
     }
 
-    public void AcessarPersonagem(String nome){
+    public void AcessarPersonagem(String nome) {
         this.npcAtual = repositorioP.getNPC(nome);
     }
 
@@ -85,6 +77,7 @@ public class PlayerController {
 
     public void PerdeVida() {
         player.setVida(player.getVida() - 1);
+        if (player.getVida() <= 0) conquistar("ABRACO_OBLITUM");
     }
 
     public void AumentaMedicina() {
@@ -101,10 +94,14 @@ public class PlayerController {
 
     private int atributo(int escolha) {
         switch (escolha) {
-            case 1: return player.getMedicina();
-            case 2: return player.getClasse();
-            case 3: return player.getFe();
-            default: return 0;
+            case 1:
+                return player.getMedicina();
+            case 2:
+                return player.getClasse();
+            case 3:
+                return player.getFe();
+            default:
+                return 0;
         }
     }
 
@@ -117,14 +114,25 @@ public class PlayerController {
         return rng.nextInt(100) < chanceDeSucesso(escolha);
     }
 
+    private void conquistar(String id) {
+        if (ConquistaController.desbloquear(id)) {          // false se já tinha
+            conquistasNovas.add(conquistaController.getNome(id));
+        }
+    }
+
+    public List<String> consumirConquistasNovas() {
+        List<String> copia = new ArrayList<>(conquistasNovas);
+        conquistasNovas.clear();
+        return copia;
+    }
+
     public boolean tentarEscolha(int escolha) {
         String nomeCenaAtual = gerenciadorCenario.getCenaAtual().getNome();
 
-        if ("Subúrbio".equals(nomeCenaAtual)){
-            if(escolha == 2 && !player.getInventario().contains(Itens.MAPA)){
+        if ("Subúrbio".equals(nomeCenaAtual)) {
+            if (escolha == 2 && !player.getInventario().contains(Itens.MAPA)) {
                 return false;
-            }
-            else if(escolha == 3 && !player.getInventario().contains(Itens.CHAVE)){
+            } else if (escolha == 3 && !player.getInventario().contains(Itens.CHAVE)) {
                 return false;
             }
         }
@@ -134,27 +142,25 @@ public class PlayerController {
                 return false;
             } else if (escolha >= 1 && escolha <= 3) {
                 player.setDinheiro(player.getDinheiro() + 10);
-                if (escolha == 1) desbloquearConquista(Conquistas.MILAGREIRO_DAS_RUAS);
+                conquistar("MILAGREIRO_RUAS");
             }
-        }
-        else if("Centro da Capital".equals(nomeCenaAtual)){
-            if (escolha == 3 && !player.getInventario().contains(Itens.PASSE_REAL)){
+        } else if ("Centro da Capital".equals(nomeCenaAtual)) {
+            if (escolha == 3 && !player.getInventario().contains(Itens.PASSE_REAL)) {
                 return false;
             }
-        }
-        else if ("Bar".equals(nomeCenaAtual)) {
+        } else if ("Bar".equals(nomeCenaAtual)) {
             npcAtual = repositorioP.getNPC("Sillas");
             if (escolha >= 1 && escolha <= 3) {
                 if (!testar(escolha)) {
                     npcAtual.setAmizade(npcAtual.getAmizade() - 1);
                     return false;
                 }
-                if (escolha == 1 && player.registrarEvento("Bar-" + escolha)) player.addItem(Itens.CHAVE);
-
-                player.addItem(Itens.MAPA);
+                if (escolha == 1 && player.registrarEvento("Bar-" + escolha)) {
+                    player.addItem(Itens.CHAVE);
+                    player.addItem(Itens.MAPA);
+                }
             }
-        }
-        else if ("Portões do Bairro Nobre (Sem Passe)".equals(nomeCenaAtual)) {
+        } else if ("Portões do Bairro Nobre (Sem Passe)".equals(nomeCenaAtual)) {
             if (escolha >= 1 && escolha <= 3) {
                 if (!testar(escolha)) return false;
                 player.addItem(Itens.PASSE);
@@ -162,128 +168,130 @@ public class PlayerController {
                 if (!player.temItem(Itens.CARTA)) return false;
                 player.addItem(Itens.PASSE);
             }
-            // escolha 5 (voltar): não dá nada
-        }
-
-        else if ("Bairro Nobre - Olhar em volta".equals(nomeCenaAtual)) {
+        } else if ("Bairro Nobre - Olhar em volta".equals(nomeCenaAtual)) {
             if (!testar(escolha)) {
                 return false;
             } else if (escolha >= 1 && escolha <= 3) {
                 player.setDinheiro(player.getDinheiro() + 15);
             }
-        }
-        else if ("Casa de Sillas".equals(nomeCenaAtual)) {
+        } else if ("Casa de Sillas".equals(nomeCenaAtual)) {
             if (escolha >= 1 && escolha <= 3 && player.registrarEvento("silas-" + escolha)) {
-                if (escolha == 1){
+                if (escolha == 1) {
                     AumentaMedicina();
                     AumentaClasse();
-
-                }
-                else if (escolha == 2) {
+                } else if (escolha == 2) {
                     GanhaOuro(50);
-                }
-                else{
+                    conquistar("PRECO_GANANCIA");
+                } else {
                     player.addItem(Itens.CAIXA);
                 }
             }
             player.removeItem(Itens.CHAVE);
-        }
-        else if ("Laboratório".equals(nomeCenaAtual)) {
+        } else if ("Laboratório".equals(nomeCenaAtual)) {
             npcAtual = repositorioP.getNPC("Laila");
 
             if (escolha == 1) {
                 if (player.getDinheiro() < 10) {
                     return false;
-                }else {
+                } else {
                     RemoveOuro(10);
                     AumentaMedicina();
                     npcAtual.setAmizade(npcAtual.getAmizade() + 1);
-                    if(npcAtual.getAmizade() >= 5){
+                    if (npcAtual.getAmizade() >= 5) {
                         player.addItem(Itens.CARTA);
                     }
                     return true;
                 }
-            }
-            else if (escolha == 2) {
+            } else if (escolha == 2) {
                 if (!player.getInventario().contains(Itens.CAIXA)) {
                     return false;
-                }
-                else if (npcAtual != null){
+                } else if (npcAtual != null) {
                     npcAtual.setAmizade(npcAtual.getAmizade() + 3);
-                    if(npcAtual.getAmizade() >= 5){
+                    conquistar("ALQUIMIA_PERFEITA");
+                    if (npcAtual.getAmizade() >= 5) {
                         player.addItem(Itens.CARTA);
                         player.removeItem(Itens.CAIXA);
                     }
                 }
-            }
-            else if (escolha == 3) {
+            } else if (escolha == 3) {
                 return true;
             }
-        }
-        else if ("Taberna".equals(nomeCenaAtual)) {
+        } else if ("Taberna".equals(nomeCenaAtual)) {
             if (!testar(escolha)) {
                 return false;
             } else if (escolha >= 1 && escolha <= 3) {
                 player.setDinheiro(player.getDinheiro() + 15);
             }
-        }
-        else if ("Catedral".equals(nomeCenaAtual)) {
-            if (escolha == 1 ){
-                if(player.getDinheiro() < 30){
+        } else if ("Catedral".equals(nomeCenaAtual)) {
+            if (escolha == 1) {
+                if (player.getDinheiro() < 30) {
                     return false;
                 }
                 player.setDinheiro(player.getDinheiro() - 30);
                 player.setFe(player.getFe() + 1);
             }
-            if (escolha == 2){
-                if(player.getDinheiro() < 50){
+            if (escolha == 2) {
+                if (player.getDinheiro() < 50) {
                     return false;
                 }
                 player.addItem(Itens.CONVITE);
                 player.setDinheiro(player.getDinheiro() - 50);
             }
-            if (escolha == 3 ){
-                player.setVida(player.getVida() - 1);
+            if (escolha == 3) {
+                PerdeVida();
             }
-        }
-        else if ("Mansão de Rodrigo".equals(nomeCenaAtual)) {
+        } else if ("Mansão de Rodrigo".equals(nomeCenaAtual)) {
             npcAtual = repositorioP.getNPC("Zuri");
-            if (escolha == 1){
-                if(!player.getInventario().contains(Itens.CARTA)){
+            if (escolha == 1) {
+                if (!player.getInventario().contains(Itens.CARTA)) {
                     return false;
-                }
-                else{
-                    if(player.registrarEvento("Mansão-" + escolha)){
+                } else {
+                    if (player.registrarEvento("Mansão-" + escolha)) {
                         player.addItem(Itens.PASSE_REAL);
                     }
-
                 }
             }
-            if (escolha == 2){
-                if( player.getDinheiro() < 15){
+            if (escolha == 2) {
+                if (player.getDinheiro() < 15) {
                     return false;
                 }
                 player.addItem(Itens.PASSE_REAL);
                 player.setClasse(player.getClasse() + 1);
                 player.setDinheiro(player.getDinheiro() - 15);
                 npcAtual.setAmizade(npcAtual.getAmizade() + 1);
+                conquistar("LINGUA_PRATA");
             }
 
-            if (escolha == 3 && player.registrarEvento("Mansão-" + escolha) ){
+            if (escolha == 3 && player.registrarEvento("Mansão-" + escolha)) {
                 player.addItem(Itens.PASSE_REAL);
                 npcAtual = repositorioP.getNPC("Zuri");
                 npcAtual.setAmizade(npcAtual.getAmizade() - 1);
             }
-        }
-        else if ("Castelo Real".equals(nomeCenaAtual)) {
-            if (escolha == 2 && (testar(escolha) && testar(3))){
+        } else if ("Castelo Real".equals(nomeCenaAtual)) {
+            if (escolha == 1) conquistar("NOVO_LORDE");
+
+            if (escolha == 2 && (testar(escolha) && testar(3))) {
+                player.addItem(Itens.MANDATO);
+            } else if (escolha == 3 && (testar(escolha) && testar(1))) {
                 player.addItem(Itens.MANDATO);
             }
-            else if (escolha == 3 && (testar(escolha) && testar(1))){
-                player.addItem(Itens.MANDATO);
-            }
+        } else if ("Castelo Real - Encontrar Traidor".equals(nomeCenaAtual)) {
+            if (escolha == 1 && player.getMedicina() < 3) return false;
+            if (escolha == 2 && player.getClasse() < 3) return false;
+            if (escolha == 1 || escolha == 3) conquistar("INQUISIDOR_CHEFE");
+            else if (escolha == 2) conquistar("REI_SOMBRAS");
+
+        } else if ("Castelo Real - Retorno à Catedral".equals(nomeCenaAtual)) {
+            if (escolha == 1 && player.getClasse() < 4) return false;
+            if (escolha == 2 && player.getFe() < 4) return false;
+            if (escolha == 3) PerdeVida();                    // texto da opção 3: [-1 Vida]
+            if (player.getVida() > 0) conquistar("HEROI_FAVELAS");
         }
 
         return true;
+    }
+
+    public RepositorioPersonagens getRepositorioPersonagens() {
+        return this.repositorioP;
     }
 }

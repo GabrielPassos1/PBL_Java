@@ -1,10 +1,13 @@
 package view;
 
+import model.Conquista;
+
+import java.util.List;
 import java.util.Scanner;
 
 public class MenuView {
     private Scanner scanner;
-    private String corAtual = "\u001B[37m"; // Branco por padrão
+    private String corAtual = "\u001B[37m";
 
     public MenuView() {
         this.scanner = new Scanner(System.in);
@@ -55,10 +58,25 @@ public class MenuView {
                 "╚══════════════════════════════╝");
     }
 
+    public void exibirMenuJogarDinamico(boolean cenaExtraDesbloqueada) {
+        if (cenaExtraDesbloqueada) {
+            mostrarTexto("\n" +
+                    "╔═══════════════ MENU JOGAR ═══════════════════╗\n" +
+                    "║ [1] Nova partida                             ║\n" +
+                    "║ [2] Continuar                                ║\n" +
+                    "║ [3] Carregar                                 ║\n" +
+                    "║ [4] O Amigo nas Sombras (Cena Extra)         ║\n" +
+                    "║ [5] Voltar                                   ║\n" +
+                    "╚══════════════════════════════════════════════╝");
+        } else {
+            exibirMenuJogar();
+        }
+    }
+
     public void exibirInstrucoes() {
         mostrarTexto("\n" +
                 "╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n" +
-                "║ Instruções                                                                                                      ║\n" +
+                "║                                                 INSTRUÇÕES                                                      ║\n" +
                 "╠═════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n" +
                 "║ ▸ A escolha inicial de personagem define seus atributos base. Seus pontos fortes e fracos                       ║\n" +
                 "║ influenciam diretamente o sucesso de suas ações e as opções de diálogo disponíveis:                             ║\n" +
@@ -80,10 +98,60 @@ public class MenuView {
     public void exibirCreditos() {
         mostrarTexto("\n" +
                 "╔═════════════════════════════════════════════════════════╗\n" +
-                "║ Créditos                                                ║\n" +
+                "║                        CRÉDITOS                         ║\n" +
                 "╠═════════════════════════════════════════════════════════╣\n" +
                 "║ Jogo desenvolvido por: Gabriel Passos e Laila Carvalho  ║\n" +
                 "║ Para a disciplina EXA863 - MI - PROGRAMAÇÃO             ║\n" +
                 "╚═════════════════════════════════════════════════════════╝");
+    }
+
+    public void exibirMenuConquistas(List<model.Conquista> conquistas, int ganhas, int total) {
+        mostrarTexto("\n╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗");
+        mostrarTexto("║                                                  CONQUISTAS                                                     ║");
+        mostrarTexto("╠═════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣");
+
+        for (model.Conquista c : conquistas) {
+            String status = c.isDesbloqueada() ? "[✔]" : "[ ]";
+            String linhaNome = status + " " + c.getNome();
+            mostrarTexto(String.format("║ %-111s ║", linhaNome));
+
+            String desc = "   -> " + c.getDescricao();
+            mostrarTexto(String.format("║ %-111s ║", desc));
+            mostrarTexto("╠═════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣");
+        }
+
+        String linhaProgresso = "Progresso: " + ganhas + "/" + total + " conquistas alcançadas";
+        mostrarTexto(String.format("║ %-111s ║", linhaProgresso));
+        mostrarTexto("╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝");
+    }
+
+    public void exibirMenuProfissoes() {
+        mostrarTexto("\n" +
+                "╔═══════════════════════════════════════════════════════════════════════════════════════════════╗\n" +
+                "║ Escolha sua Profissão (define seus atributos e abordagens iniciais):                          ║\n" +
+                "╠═══════════════════════════════════════════════════════════════════════════════════════════════╣\n" +
+                "║ [1] Médico (+3 Medicina, +5 Classe/Sofisticação, +2 Fé)                                       ║\n" +
+                "║ [2] Cirurgião (+5 Medicina, +2 Classe/Sofisticação, +3 Fé)                                    ║\n" +
+                "║ [3] Clérigo (+2 Medicina, +3 Classe/Sofisticação, +5 Fé)                                      ║\n" +
+                "╚═══════════════════════════════════════════════════════════════════════════════════════════════╝");
+    }
+
+    public void exibirCenaExtraAmigoNasSombras() {
+        mostrarTexto("\n╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗");
+        mostrarTexto("║                                                O AMIGO NAS SOMBRAS                                              ║");
+        mostrarTexto("╠═════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣");
+        mostrarTexto("║ O silêncio na alta torre da mansão é absoluto após a queda do Duque Rodrigo.                                    ║");
+        mostrarTexto("║ Olhando pela janela em direção às ruas que começam a cicatrizar, você finalmente compreende toda a verdade.      ║");
+        mostrarTexto("║                                                                                                                 ║");
+        mostrarTexto("║ A carta anônima entregue na sua porta na terceira manhã... não foi obra do acaso ou de um mero forasteiro.       ║");
+        mostrarTexto("║ A caligrafia elegante, o conhecimento exato dos segredos da corte e a urgência em derrubar o Duque apontam      ║");
+        mostrarTexto("║ para uma única mente brilhante e calculista nos bastidores do poder.                                           ║");
+        mostrarTexto("║                                                                                                                 ║");
+        mostrarTexto("║ A verdadeira remetente daquela carta que iniciou a sua jornada foi a Conselheira Zuri.                          ║");
+        mostrarTexto("║ Ela usou você como a peça definitiva em seu tabuleiro para reorganizar o destino de Oblitum.                    ║");
+        mostrarTexto("╠═════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣");
+        mostrarTexto("║ [Pressione ENTER para retornar ao menu]                                                                         ║");
+        mostrarTexto("╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝");
+        pausar();
     }
 }

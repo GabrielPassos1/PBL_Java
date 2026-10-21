@@ -3,8 +3,11 @@ package controller;
 import view.JogoView;
 import model.Cenario;
 import model.Save;
+import model.NPC;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 public class JogoController {
     private PlayerController playerController;
@@ -33,6 +36,17 @@ public class JogoController {
 
     public void setCenaInicial(String cenaInicial) {
         this.cenaInicial = cenaInicial;
+    }
+
+    private Save criarSaveAtual(String cenaNome) {
+        Map<String, Integer> amizadesAtuais = new HashMap<>();
+        for (String nomeNpc : Arrays.asList("Sillas", "Laila", "Zuri")) {
+            NPC npc = playerController.getRepositorioPersonagens().getNPC(nomeNpc);
+            if (npc != null) {
+                amizadesAtuais.put(nomeNpc, npc.getAmizade());
+            }
+        }
+        return new Save(playerController.getPlayer(), cenaNome, amizadesAtuais);
     }
 
     public void iniciarJogo() {
@@ -124,7 +138,7 @@ public class JogoController {
 
         if (ehCenaChave && !cenaLimpa.equals(ultimaCenaAutosave)) {
             try {
-                Save autoSave = new Save(playerController.getPlayer(), cenaLimpa);
+                Save autoSave = criarSaveAtual(cenaLimpa);
                 saveController.salvar(0, autoSave);
                 view.exibirTexto("\n\u001B[33m[Progresso Salvo Automaticamente]\u001B[0m");
                 ultimaCenaAutosave = cenaLimpa;
@@ -161,7 +175,7 @@ public class JogoController {
             try {
                 if (saveController.existeSave(slot)) {
                     String resumo = saveController.carregar(slot).getResumoMetadados();
-                    view.exibirPromptSobrescrita(resumo);
+                    view.exibirSobrescrita(resumo);
 
                     int confirmar = view.pedirEscolha();
                     if (confirmar != 1) {
@@ -170,7 +184,7 @@ public class JogoController {
                     }
                 }
 
-                Save novoSave = new Save(playerController.getPlayer(), gerenciadorCenario.getCenaAtual().getNome());
+                Save novoSave = criarSaveAtual(gerenciadorCenario.getCenaAtual().getNome());
                 saveController.salvar(slot, novoSave);
                 view.exibirTexto("Jogo salvo com sucesso no Slot " + slot + "!");
 

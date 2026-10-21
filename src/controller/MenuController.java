@@ -1,7 +1,13 @@
 package controller;
 
+import model.Conquista;
 import view.MenuView;
 import model.Save;
+import model.NPC;
+
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 public class MenuController {
     private MenuView view;
@@ -31,8 +37,7 @@ public class MenuController {
                     abrirMenuJogar();
                     break;
                 case "2":
-                    view.mostrarTexto("Menu de Conquistas (Em breve...)");
-                    view.pausar();
+                    abrirMenuConquistas();
                     break;
                 case "3":
                     abrirMenuConfiguracoes();
@@ -45,6 +50,7 @@ public class MenuController {
                     break;
                 case "6":
                     menuRodando = false;
+                    System.exit(0);
                     break;
                 default:
                     view.mostrarTexto("Opção inválida.");
@@ -59,30 +65,56 @@ public class MenuController {
     }
 
     private void abrirMenuJogar() {
+        ConquistaController conquistaController = new ConquistaController();
         boolean noMenuJogar = true;
+
         while (noMenuJogar) {
-            view.exibirMenuJogar();
+            boolean extraDesbloqueada = conquistaController.carregarDadosJson().containsKey("INQUISIDOR_CHEFE");
+
+            view.exibirMenuJogarDinamico(extraDesbloqueada);
             String escolha = view.pedirEscolha();
 
-            switch (escolha) {
-                case "1":
-                    iniciarNovaPartida();
-                    noMenuJogar = false;
-                    break;
-                case "2":
-                    continuarJogo();
-                    if (!menuRodando) noMenuJogar = false;
-                    break;
-                case "3":
-                    abrirMenuCarregar();
-                    if (!menuRodando) noMenuJogar = false;
-                    break;
-                case "4":
-                    noMenuJogar = false;
-                    break;
-                default:
-                    view.mostrarTexto("Opção inválida.");
-                    break;
+            if (extraDesbloqueada) {
+                switch (escolha) {
+                    case "1":
+                        iniciarNovaPartida();
+                        break;
+                    case "2":
+                        continuarJogo();
+                        break;
+                    case "3":
+                        abrirMenuCarregar();
+                        break;
+                    case "4":
+                        view.exibirCenaExtraAmigoNasSombras();
+                        break;
+                    case "5":
+                        noMenuJogar = false;
+                        break;
+                    default:
+                        view.mostrarTexto("Opção inválida.");
+                        view.pausar();
+                        break;
+                }
+            } else {
+                switch (escolha) {
+                    case "1":
+                        iniciarNovaPartida();
+                        break;
+                    case "2":
+                        continuarJogo();
+                        break;
+                    case "3":
+                        abrirMenuCarregar();
+                        break;
+                    case "4":
+                        noMenuJogar = false;
+                        break;
+                    default:
+                        view.mostrarTexto("Opção inválida.");
+                        view.pausar();
+                        break;
+                }
             }
         }
     }
@@ -147,10 +179,18 @@ public class MenuController {
 
             playerController.setPlayer(saveCarregado.getPlayer());
 
+            if (saveCarregado.getAmizadesNpcs() != null) {
+                for (Map.Entry<String, Integer> entry : saveCarregado.getAmizadesNpcs().entrySet()) {
+                    NPC npc = playerController.getRepositorioPersonagens().getNPC(entry.getKey());
+                    if (npc != null) {
+                        npc.setAmizade(entry.getValue());
+                    }
+                }
+            }
+
             view.mostrarTexto("\nJogo carregado com sucesso! Bem-vindo de volta, " + playerController.getPlayer().getNome() + ".");
             view.pausar();
 
-            menuRodando = false;
             jogoController.setCenaInicial(saveCarregado.getCenaAtual());
             jogoController.iniciarJogo();
         } catch (Exception e) {
@@ -216,7 +256,7 @@ public class MenuController {
         view.mostrarTexto("Como gostaria de ser chamado?");
         String nome = view.pedirEscolha();
 
-        view.mostrarTexto("\n[1] Médico\n[2] Cirurgião\n[3] Clérigo\nEscolha sua profissão:");
+        view.exibirMenuProfissoes();
         String classeEscolhida = view.pedirEscolha();
 
         playerController.AddNome(nome);
@@ -230,7 +270,12 @@ public class MenuController {
 
         String cenaInicial = configController.getConfigAtual().isPularIntroducao() ? "Centro da Capital" : "Casa do Jogador";
 
-        Save novoSave = new Save(playerController.getPlayer(), cenaInicial);
+        Map<String, Integer> amizadesIniciais = new HashMap<>();
+        amizadesIniciais.put("Sillas", 0);
+        amizadesIniciais.put("Laila", 0);
+        amizadesIniciais.put("Zuri", 0);
+
+        Save novoSave = new Save(playerController.getPlayer(), cenaInicial, amizadesIniciais);
 
         try {
             saveController.salvar(slotDisponivel, novoSave);
@@ -240,8 +285,7 @@ public class MenuController {
             return;
         }
 
-        view.mostrarTexto("\nA jogatina está iniciando! Salvo automaticamente no slot " + slotDisponivel + ". Prepare-se, " + playerController.getPlayer().getNome() + "...");
-        menuRodando = false;
+        view.mostrarTexto("A jogatina está iniciando! Salvo automaticamente no slot " + slotDisponivel + ". Prepare-se, " + playerController.getPlayer().getNome() + "...");
 
         jogoController.setCenaInicial(cenaInicial);
         jogoController.iniciarJogo();
@@ -249,7 +293,7 @@ public class MenuController {
 
     private void abrirMenuConfiguracoes() {
         boolean noMenuConfig = true;
-        while(noMenuConfig) {
+        while (noMenuConfig) {
             String corFonte = configController.getConfigAtual().getCorFonte();
             String pularIntro = configController.getConfigAtual().isPularIntroducao() ? "SIM" : "NÃO";
             int dinheiroInicial = configController.getConfigAtual().getDinheiroInicial();
@@ -270,7 +314,7 @@ public class MenuController {
             view.mostrarTexto(menu);
             String op = view.pedirEscolha();
 
-            switch(op) {
+            switch (op) {
                 case "1":
                     String novaCor = configController.getConfigAtual().getCorFonte().equals("CINZA") ? "VERMELHO" : "CINZA";
                     configController.getConfigAtual().setCorFonte(novaCor);
@@ -298,6 +342,16 @@ public class MenuController {
 
     private void mostrarCreditos() {
         view.exibirCreditos();
+        view.pausar();
+    }
+
+    private void abrirMenuConquistas() {
+        ConquistaController conquistaController = new ConquistaController();
+        List<Conquista> lista = conquistaController.getCatalogoComProgresso();
+        int ganhas = conquistaController.getTotalConquistadas();
+        int total = conquistaController.getTotalCatalogo();
+
+        view.exibirMenuConquistas(lista, ganhas, total);
         view.pausar();
     }
 }

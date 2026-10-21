@@ -28,14 +28,14 @@ public class JogoView {
     }
 
     public void exibirOpcaoPause() {
-        System.out.println("\n0- Pausar");
+        System.out.println("0- Pausar");
     }
     public void exibirMenuPause() {
         System.out.println("\n" +
-                "╔════════ MENU PAUSE ════════╗\n" +
+                "╔════════    PAUSE   ════════╗\n" +
                 "║ [1] Continuar              ║\n" +
                 "║ [2] Salvar Jogo            ║\n" +
-                "║ [3] Sair do Jogo           ║\n" +
+                "║ [3] Voltar ao Menu         ║\n" +
                 "╚════════════════════════════╝");
     }
 
@@ -44,7 +44,7 @@ public class JogoView {
         System.out.println("Ou digite 0 para cancelar.");
     }
 
-    public void exibirPromptSobrescrita(String resumoMetadados) {
+    public void exibirSobrescrita(String resumoMetadados) {
         System.out.println("\nJá existe um save neste slot:");
         System.out.println(resumoMetadados);
         System.out.println("\nDeseja sobrescrever? (1 - Sim / 2 - Não)");
@@ -62,7 +62,7 @@ public class JogoView {
     }
 
     public void pausar() {
-        System.out.print("\nPressione ENTER para continuar...");
+        System.out.print("\nPressione ENTER para continuar...\n");
         scanner.nextLine();
     }
 }

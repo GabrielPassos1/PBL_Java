@@ -116,12 +116,11 @@ public class RepositorioCenario{
 
         cenarios.get("Centro da Capital").setEscolha ("1-Ir para a Favela\n" +
                 "2-Ir para o Bairro Nobre\n" +
-                "3-Ir para o Castelo Real (Necessário permissão)\n" +
-                "4-[Sair do Diálogo] Agradeço pelas informações, Jeffrey. Oblitum mudou muito. Preciso decidir o meu caminho a partir daqui.\n");
+                "3-Ir para o Castelo Real\n" );
 
         cenarios.get("Subúrbio").setEscolha ("1-Entrar no bar\n" +
-                "2-Ir para o laboratório (Bloqueado até atender aos requisitos)\n" +
-                "3-Ir para casa do Sillas (Bloqueado por falta de afinidade)\n" +
+                "2-Ir para o laboratório\n" +
+                "3-Ir para casa do Sillas\n" +
                 "4-Voltar ao Centro da capital\n" +
                 "5-Olhar em volta\n");
 
@@ -460,8 +459,7 @@ public class RepositorioCenario{
                         "Quando o servo apresenta melhoras imediatas, o salão entra em êxtase. O Rei decreta a produção da cura, mas a distribuição segue a ordem fria da corte:\n" +
                         "os nobres e o exército são curados primeiro. As Favelas, consideradas um risco contínuo, são queimadas de qualquer forma.\n" +
                         "Você é recompensado com baús de ouro e o título de Lorde, passando o resto dos seus dias em uma mansão luxuosa.\n" +
-                        "Você sobreviveu e enriqueceu, mas o preço foi virar as costas para o povo.\n" +
-                        "(FIM DE JOGO)\n");
+                        "Você sobreviveu e enriqueceu, mas o preço foi virar as costas para o povo.\n");
 
         cenarios.get("Castelo Real - Opção 2").getFalas().add(                "O Rei sorri de forma cruel. Ele está exausto das exigências da Igreja e vê na sua proposta a desculpa perfeita para abrir os cofres do clero.\n" +
                         "Ele lhe entrega o Selo da Inquisição Real, dando-lhe autoridade absoluta.\n" +
@@ -492,8 +490,7 @@ public class RepositorioCenario{
                         "Você confisca tudo e marcha para as Favelas, entregando os recursos a Laila.\n" +
                         "Com o financiamento garantido, o laboratório clandestino é expandido. Em poucos dias, a cura jorra para as ruas.\n" +
                         "Os pobres são salvos, o poder abusivo da Igreja em Oblitum é destruído e o Cardeal é exilado.\n" +
-                        "Você escolhe ficar nas favelas com Laila e Silas, tornando-se o protetor das ruas e uma lenda viva amada pelo povo.\n" +
-                        "(FIM DE JOGO)\n");
+                        "Você escolhe ficar nas favelas com Laila e Silas, tornando-se o protetor das ruas e uma lenda viva amada pelo povo.\n");
 
         // ENCONTRAR O TRAIDOR (ESCOLHA 3)
         cenarios.get("Castelo Real - Encontrar Traidor").getFalas().add(                "Você marcha com a Guarda Real em direção à Mansão do Duque Rodrigo.\n" +
@@ -504,20 +501,17 @@ public class RepositorioCenario{
                         "— Você não entende! — grita o Duque. — Eu fiz isso por Oblitum! A superpopulação, o lixo, a fome... a praga era a única forma de purificar o reino para que a elite pudesse reerguê-lo!\n");
 
         cenarios.get("Encontrar Traidor - Consequência 1 e 3").getFalas().add(                "O Duque Rodrigo é arrastado para fora de sua mansão a ferros. Zuri assume a liderança política da casa e financia a produção da cura de Laila.\n" +
-                        "O Duque é executado em praça pública, enquanto a cura devolve a vida a Oblitum. O Rei o nomeia Inquisidor Chefe do Reino. Você extirpou o mal pela raiz.\n" +
-                        "(FIM DE JOGO)\n");
+                        "O Duque é executado em praça pública, enquanto a cura devolve a vida a Oblitum. O Rei o nomeia Inquisidor Chefe do Reino. Você extirpou o mal pela raiz.\n");
 
         cenarios.get("Encontrar Traidor - Consequência 2").getFalas().add(                "O Duque aceita seu acordo sombrio, tremendo de medo. Você mente para a Coroa, incriminando um inimigo qualquer, e distribui a cura sendo aclamado como herói.\n" +
                         "No entanto, o Duque Rodrigo agora é o seu fantoche. Você toma o controle dos bens dele e se torna o governante das sombras de Oblitum.\n" +
-                        "A peste acabou, mas a podridão na capital agora tem o seu nome.\n" +
-                        "(FIM DE JOGO)\n");
+                        "A peste acabou, mas a podridão na capital agora tem o seu nome.\n");
 
         // FINAL DE MORTE (GAME OVER)
         cenarios.get("Game Over - O Abraço de Oblitum").getFalas().add(                "Seu corpo não suporta mais. Com os ferimentos acumulados, a exaustão física e o ar envenenado da Capital invadindo seus pulmões, suas pernas finalmente cedem.\n" +
                         "Você cai de joelhos no chão frio de pedra de Oblitum. As vozes ao seu redor se tornam distantes e a visão escurece.\n" +
                         "A Peste Babilônica, ou a pura brutalidade de um reino em colapso, cobrou o seu preço.\n" +
                         "Você fecha os olhos, tornando-se apenas mais um corpo anônimo nas ruas sombrias da Capital.\n" +
-                        "A carta que o trouxe até aqui voa para longe, levada pelo vento. A esperança de cura morreu com você.\n" +
-                        "(FIM DE JOGO - TELA PRETA)\n");
+                        "A carta que o trouxe até aqui voa para longe, levada pelo vento. A esperança de cura morreu com você.\n");
     }
 }

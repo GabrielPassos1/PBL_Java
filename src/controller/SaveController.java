@@ -63,7 +63,7 @@ public class SaveController {
                 return i; // Retorna o primeiro slot livre (1, 2 ou 3)
             }
         }
-        return -1; // Retorna -1 se todos os slots estiverem ocupados
+        return -1;
     }
 
 

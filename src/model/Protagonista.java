@@ -14,7 +14,6 @@ public class Protagonista {
     private int fe;
     private List<String> inventario;
     private Set<String> eventos = new HashSet<>();
-    private Set<String> conquistas = new HashSet<>();
     public Protagonista() {
         this.inventario = new ArrayList<>();
     }
@@ -57,16 +56,10 @@ public class Protagonista {
             inventario.add(item);
         }
         else{
-            System.out.println( item + "já adiquirido");
+            System.out.println( item + " adquirido");
         }
     }
     public boolean temItem(String item) { return inventario.contains(item); }
 
     public boolean registrarEvento(String id) { return eventos.add(id); }
-
-    public boolean addConquista(String id) { return conquistas.add(id); }
-
-    public boolean temConquista(String id) { return conquistas.contains(id); }
-
-    public Set<String> getConquistas() { return conquistas; }
 }

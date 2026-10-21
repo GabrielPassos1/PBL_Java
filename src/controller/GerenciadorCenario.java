@@ -28,14 +28,13 @@ public class GerenciadorCenario {
             case "Centro da Capital":
                 if (escolha == 1) return "Subúrbio";
                 if (escolha == 2) {
-                    if (player.getInventario().contains("Passe")){
+                    if (player.getInventario().contains("Passe")) {
                         return "Bairro Nobre";
                     } else {
                         return "Portões do Bairro Nobre (Sem Passe)";
                     }
                 }
                 if (escolha == 3 && sucesso) return "Castelo Real";
-                if (escolha == 4) return "Game Over - O Abraço de Oblitum";
                 break;
             case "Subúrbio":
                 if (escolha == 1) return "Bar";
@@ -51,7 +50,7 @@ public class GerenciadorCenario {
                 if (escolha == 4) return "Subúrbio";
                 break;
             case "Bar":
-                if (escolha == 1 && sucesso) return  "Bar - Sucesso Medicina";
+                if (escolha == 1 && sucesso) return "Bar - Sucesso Medicina";
                 if (escolha == 1 && sucesso == false) return "Bar - Falha Medicina";
                 if (escolha == 2) return sucesso ? "Bar - Sucesso Classe" : "Bar - Falha Classe";
                 if (escolha == 3) return sucesso ? "Bar - Sucesso Fé" : "Bar - Falha Fé";
